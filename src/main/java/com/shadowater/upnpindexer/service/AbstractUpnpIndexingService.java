@@ -134,6 +134,7 @@ public abstract class AbstractUpnpIndexingService implements MediaIndexerI {
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			try {
+				log.debug(result.getValue().toString());
 				Document doc = builder.parse(new InputSource(new StringReader(result.getValue().toString())));
 				NodeList items = doc.getElementsByTagName("item");
 				for (int x = 0; x < items.getLength(); x++) {

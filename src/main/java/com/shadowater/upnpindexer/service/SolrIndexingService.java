@@ -33,6 +33,7 @@ public class SolrIndexingService {
 			sid.addField("thumbnail_ss", m.getThumbnail().toString());
 			sid.addField("releaseDate_ss", m.getReleaseDate());
 			sid.addField("genre_ss", m.getGenre());
+			sid.addField("url_ss", m.getUrl());
 			try {
 				solrClient.add(sid);
 			} catch (SolrServerException | IOException e) {
