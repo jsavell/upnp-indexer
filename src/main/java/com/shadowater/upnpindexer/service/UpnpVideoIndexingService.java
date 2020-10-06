@@ -68,27 +68,36 @@ public class UpnpVideoIndexingService extends AbstractUpnpIndexingService {
     @Override
     protected MediaI buildMediaFromXml(Node nNode) {
         Element eElement = (Element) nNode;
-
         String id = nNode.getAttributes().item(0).getTextContent();
-
         String title = eElement.getElementsByTagName("dc:title").item(0).getTextContent();
         String thumbnail = eElement.getElementsByTagName("upnp:albumArtURI").item(0).getTextContent();
         String description = eElement.getElementsByTagName("upnp:longDescription").item(0).getTextContent();
         Date releaseDate = new Date();
+
+        String date = eElement.getElementsByTagName("dc:date").item(0).getTextContent();
+        String datePattern = "yyyy-MM-dd";
+        if (date.length() == 4) {
+            datePattern = "yyyy";
+        }
         try {
-            releaseDate = new SimpleDateFormat("yyyy-MM-dd").parse(eElement.getElementsByTagName("dc:date").item(0).getTextContent());
+            releaseDate = new SimpleDateFormat(datePattern).parse(date);
         } catch (DOMException | ParseException e) {
-            log.error("Error parsing item from XML");
+            log.error("Error parsing date from XML");
             e.printStackTrace();
         }
         String genre = "";
         if (eElement.getElementsByTagName("upnp:genre").item(0) != null) {
             genre = eElement.getElementsByTagName("upnp:genre").item(0).getTextContent();
         }
+        String group = "";
+        if (!this.mediaObjectId.contentEquals(nNode.getAttributes().item(1).getTextContent())) {
+            group = nNode.getAttributes().item(1).getTextContent();
+        }
 
         NodeList resNodes = eElement.getElementsByTagName("res");
         List<String> videoFormats = Arrays.asList("mp4","mkv");
         StringBuilder videoUrlBuilder = new StringBuilder();
+        StringBuilder qualityBuilder = new StringBuilder();
         for (int x=0;x<resNodes.getLength();x++) {
             Node resNode = resNodes.item(x);
             NamedNodeMap resAttributes = resNode.getAttributes();
@@ -99,8 +108,16 @@ public class UpnpVideoIndexingService extends AbstractUpnpIndexingService {
                         videoUrlBuilder.append(resNode.getTextContent());
                     }
                 });
+                if (videoUrlBuilder.length() > 0 && resAttributeNode.getNodeName().contentEquals("resolution")) {
+                    String[] resolutionElements = resAttributeNode.getTextContent().split("x");
+                    if (Integer.valueOf(resolutionElements[0]) >= 720) {
+                        qualityBuilder.append("HD");
+                    } else {
+                        qualityBuilder.append("SD");
+                    }
+                }
             }
         }
-        return new Video(id, title, thumbnail, description, releaseDate, genre, videoUrlBuilder.toString());
+        return new Video(id, title, thumbnail, description, releaseDate, genre, videoUrlBuilder.toString(), qualityBuilder.toString(), group);
     }
 }

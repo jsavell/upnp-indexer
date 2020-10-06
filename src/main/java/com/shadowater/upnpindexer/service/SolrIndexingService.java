@@ -16,31 +16,33 @@ import com.shadowater.upnpindexer.model.MediaI;
 
 @Service
 public class SolrIndexingService {
-	@Value("#{'${solr.url}'+'/'+'${solr.core}'+'/'}")
-	private String solrUrl;
-	static Logger log = LoggerFactory.getLogger(SolrIndexingService.class.getName());
+    @Value("#{'${solr.url}'+'/'+'${solr.core}'+'/'}")
+    private String solrUrl;
+    static Logger log = LoggerFactory.getLogger(SolrIndexingService.class.getName());
 
-	public void writeMedia(List<MediaI> media) throws SolrServerException, IOException {
-    	log.trace("Connecting to SOLR server: "+solrUrl);
-		SolrClient solrClient = new HttpSolrClient.Builder(solrUrl).build();
-		log.trace("Writing "+media.size()+" media entries to SOLR:");
-		media.forEach(m -> {
-        	log.trace("Indexing: "+m.getTitle());
-			SolrInputDocument sid = new SolrInputDocument();
-			sid.addField("id", m.getId());
-			sid.addField("title_ss", m.getTitle());
-			sid.addField("description_ss", m.getDescription());
-			sid.addField("thumbnail_ss", m.getThumbnail().toString());
-			sid.addField("releaseDate_ss", m.getReleaseDate());
-			sid.addField("genre_ss", m.getGenre());
-			sid.addField("url_ss", m.getUrl());
-			try {
-				solrClient.add(sid);
-			} catch (SolrServerException | IOException e) {
-				log.error("Error adding movie to SOLRInputDocument: "+m.getTitle());
-				e.printStackTrace();
-			}
-		});
-		solrClient.commit();
-	}
+    public void writeMedia(List<MediaI> media) throws SolrServerException, IOException {
+        log.trace("Connecting to SOLR server: "+solrUrl);
+        SolrClient solrClient = new HttpSolrClient.Builder(solrUrl).build();
+        log.trace("Writing "+media.size()+" media entries to SOLR:");
+        media.forEach(m -> {
+            log.trace("Indexing: "+m.getTitle());
+            SolrInputDocument sid = new SolrInputDocument();
+            sid.addField("id", m.getId());
+            sid.addField("title_ss", m.getTitle());
+            sid.addField("description_ss", m.getDescription());
+            sid.addField("thumbnail_ss", m.getThumbnail().toString());
+            sid.addField("releaseDate_ss", m.getReleaseDate());
+            sid.addField("genre_ss", m.getGenre());
+            sid.addField("url_ss", m.getUrl());
+            sid.addField("quality_ss", m.getQuality());
+            sid.addField("group_ss", m.getGroup());
+            try {
+                solrClient.add(sid);
+            } catch (SolrServerException | IOException e) {
+                log.error("Error adding movie to SOLRInputDocument: "+m.getTitle());
+                e.printStackTrace();
+            }
+        });
+        solrClient.commit();
+    }
 }
