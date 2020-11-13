@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -22,7 +21,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.shadowater.upnpindexer.model.MediaI;
 import com.shadowater.upnpindexer.model.Video;
 
-@Service
+//@Service
 public class UpnpVideoIndexingService extends AbstractUpnpIndexingService {
     @Value("${video.indexer.objectId}")
     private String mediaObjectId;
