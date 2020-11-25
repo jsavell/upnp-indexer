@@ -78,6 +78,7 @@ public class EmbyIndexingService implements MediaIndexerI {
                 final String description = movieNode.has("Overview") ? movieNode.get("Overview").asText():"";
                 final String genre = movieNode.get("Genres").get(0) != null ? movieNode.get("Genres").get(0).asText():"";
                 final String path = movieNode.get("Path").asText();
+                final String playBackId = id;
 
                 final String embyName = movieNode.get("Name").asText();
 
@@ -111,7 +112,7 @@ public class EmbyIndexingService implements MediaIndexerI {
                 if (width < 1200 && height < 720) {
                     quality = "SD";
                 }
-                videos.add(new Video(id, title, thumbnail, description, releaseDate, genre, path, quality, group));
+                videos.add(new Video(id, title, thumbnail, description, releaseDate, genre, playBackId, quality, group));
                 log.debug("title: "+title);
                 log.debug("path: "+path);
                 log.debug("group: "+group);

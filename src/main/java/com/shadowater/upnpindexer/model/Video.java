@@ -9,18 +9,18 @@ public class Video implements MediaI {
     private String description;
     private Date releaseDate;
     private String genre;
-    private String url;
+    private String playBackId;
     private String quality;
     private String group;
 
-    public Video(String id, String title, String thumbnail, String description, Date releaseDate, String genre, String url, String quality, String group) {
+    public Video(String id, String title, String thumbnail, String description, Date releaseDate, String genre, String playBackId, String quality, String group) {
         setId(id);
         setTitle(title);
         setThumbnail(thumbnail);
         setDescription(description);
         setReleaseDate(releaseDate);
         setGenre(genre);
-        setUrl(url);
+        setPlayBackId(playBackId);
         setQuality(quality);
         setGroup(group);
     }
@@ -80,12 +80,12 @@ public class Video implements MediaI {
     }
 
     @Override
-    public String getUrl() {
-        return url;
+    public String getPlayBackId() {
+        return playBackId;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setPlayBackId(String playBackId) {
+        this.playBackId = playBackId;
     }
 
     @Override

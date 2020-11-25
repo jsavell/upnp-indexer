@@ -10,7 +10,7 @@ public interface MediaI {
     public Date getReleaseDate();
     /*	public String getCollection();*/
     public String getGenre();
-    public String getUrl();
+    public String getPlayBackId();
     public String getQuality();
     public String getGroup();
 }

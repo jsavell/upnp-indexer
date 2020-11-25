@@ -33,7 +33,7 @@ public class SolrIndexingService {
             sid.addField("thumbnail_ss", m.getThumbnail().toString());
             sid.addField("releaseDate_ss", m.getReleaseDate());
             sid.addField("genre_ss", m.getGenre());
-            sid.addField("url_ss", m.getUrl());
+            sid.addField("playbackid_ss", m.getPlayBackId());
             sid.addField("quality_ss", m.getQuality());
             sid.addField("group_ss", m.getGroup());
             try {
